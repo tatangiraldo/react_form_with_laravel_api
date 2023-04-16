@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Course;
 
 class StudentsController extends Controller
 {
@@ -36,7 +37,7 @@ class StudentsController extends Controller
 
         $newStudent->save();
         if($newStudent->id){
-            $response -> code = 200;
+            $response->code = 200;
             $response->message = 'Student created';
             $response->data = $newStudent;
         }
@@ -107,5 +108,56 @@ class StudentsController extends Controller
         }
 
         return $response;
+    }
+
+    public function assignCourse(Request $request ){//int $id, int $courseId){
+
+        $response = (object) array(
+            'code'=>500,
+            'data'=>null,
+            'message'=>''
+        );
+
+        if(!isset($request->studentId) || !isset($request->courseId)){
+            $response->message = 'Invalid data structure';
+            return $response;
+        }
+
+        //validate previous assigned course:
+        //$relationExist = Course::where('related_courses', 'LIKE', '%'.$courseId.'%')->get();
+
+        //student exist?
+        $student = Student::find($request->studentId);
+        if(is_null($student)){
+            $response->message = 'Student does not exist';
+            return $response;
+        }
+
+        //course exist?
+        $course = Course::find($request->courseId);
+        if(is_null($course)){
+            $response->message = 'Course does not exist';
+            return $response;
+        }
+
+        $arrayCourses = explode(",", $student->related_courses);
+
+        if( in_array($request->courseId, $arrayCourses) ){
+            $response->message = 'Course already assigned';
+            return $response;
+        }else{
+            array_push( $arrayCourses, $request->courseId);
+        }
+
+        $student->related_courses = implode(",", $arrayCourses);
+        $student->save();
+
+        $response -> code = 200;
+        $response->message = 'Course assigned';
+        $response->data = $student;
+
+
+        return $response;
+
     }
 }
