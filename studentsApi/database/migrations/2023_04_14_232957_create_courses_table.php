@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('name', 25);
-            $table->string('jurney', 50);
+            $table->string('schedule', 5);
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('related_students', 100)->nullable();
+            $table->double('related_students_number', 11)->nullable();
             $table->timestamps();
         });
     }

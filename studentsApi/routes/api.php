@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\StudentsController;
+use App\Http\Controllers\Api\CoursesController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,4 +26,12 @@ Route::controller(StudentsController::class)->group(function (){
     Route::get('/student/{id}', 'show');
     Route::put('/student/{id}', 'update');
     Route::delete('/student/{id}', 'destroy');
+});
+
+Route::controller(CoursesController::class)->group(function (){
+    Route::get('/courses', 'index');
+    Route::post('/course', 'store');
+    Route::get('/course/{id}', 'show');
+    Route::put('/course/{id}', 'update');
+    Route::delete('/course/{id}', 'destroy');
 });
