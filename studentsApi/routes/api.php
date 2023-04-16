@@ -27,6 +27,7 @@ Route::controller(StudentsController::class)->group(function (){
     Route::put('/student/{id}', 'update');
     Route::delete('/student/{id}', 'destroy');
     Route::post('/student/assignCourse', 'assignCourse');
+    Route::post('/student/unassignCourse', 'unassignCourse');
 });
 
 Route::controller(CoursesController::class)->group(function (){

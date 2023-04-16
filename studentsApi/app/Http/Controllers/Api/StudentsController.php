@@ -118,7 +118,7 @@ class StudentsController extends Controller
             'message'=>''
         );
 
-        if(!isset($request->studentId) || !isset($request->courseId)){
+        if(! $this -> validateStructureData($request)){
             $response->message = 'Invalid data structure';
             return $response;
         }
@@ -159,5 +159,54 @@ class StudentsController extends Controller
 
         return $response;
 
+    }
+
+    public function unassignCourse(Request $request ){//int $id, int $courseId){
+
+        $response = (object) array(
+            'code'=>500,
+            'data'=>null,
+            'message'=>''
+        );
+
+        if(! $this -> validateStructureData($request)){
+            $response->message = 'Invalid data structure';
+            return $response;
+        }
+
+        //validate previous assigned course:
+        //$relationExist = Course::where('related_courses', 'LIKE', '%'.$courseId.'%')->get();
+
+        //student exist?
+        $student = Student::find($request->studentId);
+        if(is_null($student)){
+            $response->message = 'Student does not exist';
+            return $response;
+        }
+
+        $arrayCourses = explode(",", $student->related_courses);
+
+        if (($key = array_search($request->courseId, $arrayCourses)) !== false) {
+            unset($arrayCourses[$key]);
+        }
+
+        $student->related_courses = implode(",", $arrayCourses);
+        $student->save();
+
+        $response -> code = 200;
+        $response->message = 'Course unnasigned';
+        $response->data = $student;
+
+
+        return $response;
+
+    }
+
+    public function validateStructureData(Request $request){
+
+        if(!isset($request->studentId) || !isset($request->courseId)){
+            return false;
+        }
+        return true;
     }
 }
