@@ -1,3 +1,12 @@
 .course-action{
     cursor: pointer;
 }
+.buttonBadge{
+    height: 30px;
+    width: 30px;
+    padding: 3px !important;
+}
+.table > :not(caption) > * > *{
+    border: none;
+}
+.infoRow td{padding-top: 25px;}

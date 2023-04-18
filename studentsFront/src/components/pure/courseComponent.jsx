@@ -45,9 +45,8 @@ import { Link } from 'react-router-dom';
             <td className='align-middle'>
                 <span > 
                     {/* <Link title='Update' to={`/edit/${course.id}`} className='bi bi-pencil-square'></Link>    */}
-                    <i title='Delete' onClick={() => update(course)} className="bi bi-pencil-square course-action" style={{color: 'blue'}}></i> &nbsp; &nbsp;
-                    <i title='Delete' onClick={() => remove(course)} className="bi bi-trash course-action" style={{color: 'tomato'}}></i>
-                </span> 
+                    <i title='Update Course' onClick={() => update(course)} className="bi bi-pencil-square course-action" style={{color: 'blue'}}></i> &nbsp; &nbsp;
+                    <i title='Delete Course' onClick={() => remove(course)} className="bi bi-trash course-action" style={{color: 'tomato'}}></i>                </span> 
             </td>
         </tr>
     );

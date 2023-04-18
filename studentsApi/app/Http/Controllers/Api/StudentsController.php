@@ -14,7 +14,60 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        return Student::all();
+        $response = (object) array(
+            'code'=>400,
+            'data'=> (object) array(
+                'students' => [],
+                'courses' => []
+            ),
+            'message'=>'Error getting students'
+        );
+
+        $studentsList = Student::all();
+        $coursesList = Course::all();
+        if(!is_null($studentsList)){
+            $response->code = 200;
+            $response->message = '';
+
+            foreach ($studentsList as $key => $st) {
+                $studentCourses = [];
+
+                $arrayIdCourses = explode(",", $st->related_courses);
+
+                if(count($arrayIdCourses) > 0){
+
+                    foreach ($arrayIdCourses as $idCourse) {
+
+                        foreach ($coursesList as $keyCourse => $valueCourse) {
+
+                            if( $valueCourse->id == $idCourse ){
+
+                                array_push($studentCourses,
+                                    (object) array(
+                                        'id' => $valueCourse->id,
+                                        'name' => $valueCourse->name,
+                                        'schedule' => $valueCourse->schedule,
+                                        'start_date' => $valueCourse->start_date,
+                                        'end_date' => $valueCourse->end_date,
+                                    )
+                                );
+                            }
+                        }
+                    }
+                }
+
+                $st->courses = $studentCourses;
+            }
+
+            // echo '<pre>';
+            // print_r($studentsList);
+            // echo'</pre>';
+            // die('.');
+
+            $response->data->students = $studentsList;
+            $response->data->courses = $coursesList;
+        }
+        return $response;
     }
 
     /**

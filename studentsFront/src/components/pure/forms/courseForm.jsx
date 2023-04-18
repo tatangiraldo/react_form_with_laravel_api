@@ -5,7 +5,6 @@ import {CourseModel} from '../../../models/course.model'
 
 const CourseForm = ({add, existCourse, update}) => {
 
-
     useEffect(() => {    
 
         //update mode?
@@ -48,7 +47,6 @@ const CourseForm = ({add, existCourse, update}) => {
 
     return (
         <form onSubmit={handleCourse} className="align-items-center mb-4">
-
            <div className="mb-3">
                 <label htmlFor="name" className="form-label">Course Name</label>
                 <input 
@@ -83,12 +81,12 @@ const CourseForm = ({add, existCourse, update}) => {
                     required/>
             </div>
             <div className="mb-3">
-                <label htmlFor="inputDescription" className="form-label">End Date</label>
+                <label htmlFor="date" className="form-label">End Date</label>
                 <input 
                     value={end_date}
                     onChange={ (e) => setEnd_date(e.target.value) }
                     className='form-control form-control-lg'  
-                    id="inputDescription" 
+                    id="date" 
                     type="date" 
                     required/>
             </div>

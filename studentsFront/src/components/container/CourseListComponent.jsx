@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react'
+import axios from 'axios'
+import { confirmAlert } from 'react-confirm-alert';
+import Modal from 'react-bootstrap/Modal';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
+import Button from 'react-bootstrap/Button';
 import { Journeys } from '../enums/journeys.enums'
+import {Link} from 'react-router-dom'
+
 import { CourseModel } from '../../models/course.model'
 import CourseComponent from '../pure/CourseComponent'
 import CourseForm from '../pure/forms/courseForm'
 import '../../styles/course.scss'
-import axios from 'axios'
-import {Link} from 'react-router-dom'
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 
 function CourseListComponent() {
 
@@ -129,8 +131,8 @@ function CourseListComponent() {
             <div className='col-12'>
                 <div className='card'>
                     <div className='card-header p-3'>
-                        <h5>Courses list: </h5> 
-                        <button variant="primary" onClick={handleShow}>New</button>
+                        <h5>Course list: </h5> 
+                        <button className='btn btn-primary btn-sm' onClick={handleShow}>New</button>
                     </div>
                     <div className='card-body' data-mdb-perfect-scrollbar={true} style={{position:'relative'}}>
                         <table  className="table"> 
@@ -166,7 +168,7 @@ function CourseListComponent() {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Courses Registration</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <CourseForm 
