@@ -72,11 +72,11 @@ function CourseListComponent() {
      * Delete a course
      */
      const deleteCourse = async(course) => {        
-
+        debugger;
         const request = await axios.delete(`${endPoint}/course/${course.id}`)
         if(request?.data && request.data.code === 200){
             
-            const index = courses.indexOf(course.id)
+            const index = courses.indexOf(course)
             const tempCourses = [...courses]
             tempCourses.splice(index, 1)
             setCourses(tempCourses)
