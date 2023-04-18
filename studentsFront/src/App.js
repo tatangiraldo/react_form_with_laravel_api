@@ -1,13 +1,19 @@
 
 import './App.css';
 
-//import StudentListComponent from './components/container/StudentListComponent';
-import CoursesListComponent from './components/container/CourseListComponent';
+import StudentListComponent from './components/container/StudentListComponent';
+import CourseListComponent from './components/container/CourseListComponent';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <CoursesListComponent/>  
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={ <CourseListComponent /> } />
+        <Route path='/stutends' element={ <StudentListComponent /> } />
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }

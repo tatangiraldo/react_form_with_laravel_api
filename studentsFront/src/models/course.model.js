@@ -1,17 +1,19 @@
 import { Journeys } from "../components/enums/journeys.enums";
 
 export class CourseModel{
-   name         = '';
-   schedule     = Journeys.Morning;
-   startDate   = '';
-   endDate     = '';
-   relatedStudentsNumber = 0;
+   id = 0;
+   name = '';
+   schedule = Journeys.Morning;
+   start_date = '';
+   end_date = '';
+   related_students_number = 0;
 
-   constructor(name, schedule, startDate, endDate, relatedStudentsNumber){
-        this.name = name;
-        this.schedule = schedule;
-        this.start_date = startDate;
-        this.end_date = endDate;
-        this.relatedStudentsNumber = relatedStudentsNumber;
+   constructor(id, name, schedule, startDate, endDate, related_students_number, created_at, updated_at){
+      this.id = id;  
+      this.name = name;
+      this.schedule = schedule;
+      this.start_date = startDate;
+      this.end_date = endDate;
+      this.related_students_number = related_students_number;
    }
 }

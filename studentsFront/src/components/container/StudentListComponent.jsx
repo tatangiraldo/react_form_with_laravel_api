@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { StudentModel } from "../../models/student.model";
-import StudentComponent from "../pure/studentComponent";
+import StudentComponent from "../pure/StudentComponent";
 import StudentForm from "../pure/forms/studentForm";
-import '../../styles/student.scss'
 
 function StudentListComponent(props){
+    
     const student = new StudentModel(
         'Jhonnatan',
         'Giraldo',

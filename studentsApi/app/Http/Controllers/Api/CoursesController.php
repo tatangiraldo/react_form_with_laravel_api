@@ -14,7 +14,19 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        return Course::all();
+        $response = (object) array(
+            'code'=>400,
+            'data'=>null,
+            'message'=>'Error getting Courses'
+        );
+
+        $courses = Course::all();
+        if(!is_null($courses)){
+            $response->code = 200;
+            $response->message = '';
+            $response->data = $courses;
+        }
+        return $response;
     }
 
     /**
@@ -44,7 +56,7 @@ class CoursesController extends Controller
         $newCourse->schedule = $request->schedule; // ScheduleType::Dia->value;
         $newCourse->start_date = $request->start_date;
         $newCourse->end_date = $request->end_date;
-        $newCourse->related_students_number = $request->related_students_number;
+        $newCourse->related_students_number = 0;
 
         $newCourse->save();
         if($newCourse->id){

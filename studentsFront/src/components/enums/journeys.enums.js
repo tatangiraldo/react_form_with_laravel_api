@@ -1,5 +1,5 @@
 export const Journeys = {
-    Morning:   'Mañana',
-    Afternoon:  'Tarde',
-    Night: 'Noche'
+    Morning:   1,
+    Afternoon:  2,
+    Night: 3
 }
