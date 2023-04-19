@@ -29,8 +29,6 @@ function StudentListComponent(props){
     const endPoint = 'http://localhost:8000/api'
 
     useEffect(() => {
-        
-        setLoading(false);
         getAllCourses();
         getAllStudents();
 
@@ -59,6 +57,7 @@ function StudentListComponent(props){
             }else{
                 showMessage(request.data.message);
             }
+            setLoading(false)
         }
     }
 
@@ -74,6 +73,7 @@ function StudentListComponent(props){
             }else{
                 showMessage(request.data.message)
             }
+            setLoading(false)
         }
     }
 
@@ -98,7 +98,7 @@ function StudentListComponent(props){
      * Delete a student
      */
     const deleteStudent = async(student) => {        
-        
+        setLoading(true);
         const request = await axios.delete(`${endPoint}/student/${student.id}`)
         if(request?.data && request.data.code === 200){
             
@@ -106,6 +106,7 @@ function StudentListComponent(props){
             const tempStudents = [...students]
             tempStudents.splice(index, 1)
             setStudents(tempStudents)
+            setLoading(false);
 
         }else{
             showMessage(request.data.message);
@@ -113,19 +114,21 @@ function StudentListComponent(props){
     }
 
     const addStudent = async(student) => {
+        setLoading(true);
         const request = await axios.post(`${endPoint}/student`, student)
         if(request?.data && request.data.code === 200){
             const tempStudents = [...students]
             tempStudents.push(request.data.data)
             setStudents(tempStudents)
-            handleClose();
+            handleClose()
+            setLoading(false)
         }else{
             showMessage(request.data.message);
         }
     }
 
     const updateStudent = async(student) => {
-        
+        setLoading(true);
         const request = await axios.put(`${endPoint}/student/${student.id}`, student)
         if(request?.data && request.data.code === 200){                   
             const tempStudents = [...students].map((c) => { 
@@ -137,6 +140,7 @@ function StudentListComponent(props){
 
             setStudents(tempStudents)
             handleClose()
+            setLoading(false)
 
         }else{
             showMessage(request.data.message);
@@ -147,6 +151,7 @@ function StudentListComponent(props){
      * Unassign a student course
      */
      const unassignStudentCourse = async(student, course) => {        
+        setLoading(true)
          let data = {
              'studentId': student.id,
              'courseId': course.id
@@ -165,13 +170,15 @@ function StudentListComponent(props){
         }else{
             showMessage(request.data.message);
         }
+        setLoading(false)
     }
 
      /**
      * Assign a student course
      */
-     const assignCourse = async(e) => {      
-        e.preventDefault();  
+     const assignCourse = async(e) => {  
+         e.preventDefault()  
+        setLoading(true)  
         let selectVal = courseRef.current.getValue();
         let data = {
             'studentId': assignStudentCourse.id,
@@ -193,6 +200,7 @@ function StudentListComponent(props){
                     }
                     st.courses?.push(newCourse)
                 }
+                setLoading(false)
                 return st
             })
             handleClose();
@@ -218,12 +226,15 @@ function StudentListComponent(props){
         handleShow();
     }
 
-    /************************************/
-
     return (
         <div className='container bg-white p-3'>
             <div className='col-12'>
-                
+                {
+                    (loading) &&
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                }
                 <div className=''>
                     <h5>
                         <span className='float-start'> Student List:  </span>
@@ -285,9 +296,12 @@ function StudentListComponent(props){
                                    ref={courseRef} 
                                    options={dataSelectCourses} />
                             </div>
-                            <button type='submit' className='btn btn-primary ms-3 float-end'>
-                                Assign Course
-                            </button>
+                            {
+                                (!loading) &&
+                                <button type='submit' className='btn btn-primary ms-3 float-end'>
+                                    Assign Course
+                                </button>
+                            }
                         </form>
 
                         

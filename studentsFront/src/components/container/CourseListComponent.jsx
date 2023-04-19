@@ -3,11 +3,6 @@ import axios from 'axios'
 import { confirmAlert } from 'react-confirm-alert';
 import Modal from 'react-bootstrap/Modal';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
-import Button from 'react-bootstrap/Button';
-import { Journeys } from '../enums/journeys.enums'
-import {Link} from 'react-router-dom'
-
 import { CourseModel } from '../../models/course.model'
 import CourseComponent from '../pure/CourseComponent'
 import CourseForm from '../pure/forms/courseForm'
@@ -29,11 +24,8 @@ function CourseListComponent() {
     const endPoint = 'http://localhost:8000/api'
 
 
-    useEffect(() => {
-        
-        setLoading(false);
+    useEffect(() => {        
         getCourses();
-
     }, [seeTopCourses]);
 
     const showMessage = (message) => {
@@ -57,17 +49,18 @@ function CourseListComponent() {
         }else{
             showMessage(request.data.message);
         }
+        setLoading(false);
     }
 
-    const getAllCourses = () => {        
-       
+    const getAllCourses = () => {
+        setLoading(true);
         setCourses([]);
         setTopCourses(0);
         getCourses()
     }
 
-    const getTopCourses = () => {        
-       
+    const getTopCourses = () => {
+        setLoading(true);
         setCourses([]);
         setTopCourses(1);
         getCourses()
@@ -95,6 +88,7 @@ function CourseListComponent() {
      */
      const deleteCourse = async(course) => {        
         
+        setLoading(true)
         const request = await axios.delete(`${endPoint}/course/${course.id}`)
         if(request?.data && request.data.code === 200){
             
@@ -102,6 +96,7 @@ function CourseListComponent() {
             const tempCourses = [...courses]
             tempCourses.splice(index, 1)
             setCourses(tempCourses)
+            setLoading(false)
 
         }else{
             showMessage(request.data.message);
@@ -109,19 +104,21 @@ function CourseListComponent() {
     }
 
     const addCourse = async(course) => {
+        setLoading(true)
         const request = await axios.post(`${endPoint}/course`, course)
         if(request?.data && request.data.code === 200){
             const tempCourses = [...courses]
             tempCourses.push(request.data.data)
             setCourses(tempCourses)
-            handleClose();
+            handleClose()
+            setLoading(false)
         }else{
             showMessage(request.data.message);
         }
     }
 
     const updateCourse = async(course) => {
-        
+        setLoading(true);
         const request = await axios.put(`${endPoint}/course/${course.id}`, course)
         if(request?.data && request.data.code === 200){                   
             //const tempCourses = [...courses]
@@ -134,6 +131,7 @@ function CourseListComponent() {
 
             setCourses(tempCourses)
             handleClose()
+            setLoading(false);
 
         }else{
             showMessage(request.data.message);
@@ -150,6 +148,12 @@ function CourseListComponent() {
         <div className="container bg-white p-3">
             <div className='row'>
                 <div className='col-12'>
+                    {
+                        (loading) &&
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    }
                     <h5>
                        <span className='float-start'> Course list: </span>
                         {
@@ -201,18 +205,11 @@ function CourseListComponent() {
                         />
                 </Modal.Body>
                 <Modal.Footer>
-                {/* <Button variant="secondary" onClick={handleClose}>
-                    Cancel
-                </Button> */}
-                {/* <Button variant="primary" onClick={handleClose}>
-                    Create course
-                </Button> */}
                 </Modal.Footer>
             </Modal>
         </div>
     )
 }
-
 
 export default CourseListComponent
 
