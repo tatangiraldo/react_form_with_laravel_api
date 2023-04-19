@@ -147,58 +147,44 @@ function CourseListComponent() {
     }
         
     return (
-        <div>
-            <div className='col-12'>
-                <div className='card'>
-                    <div className='card-header p-3'>
-                        <h5>
-                            <button className='float-start btn btn-primary btn-sm' onClick={handleShow}>New Course</button>
-                            Course list:
-                            {
-                                (seeTopCourses === 0) &&
+        <div className="container bg-white p-3">
+            <div className='row'>
+                <div className='col-12'>
+                    <h5>
+                       <span className='float-start'> Course list: </span>
+                        {
+                            (seeTopCourses === 0) &&
+                            <div>
                                 <button className='float-end btn btn-light btn-sm' onClick={getTopCourses}>
-                                    <i class="bi bi-filter"></i>
+                                    <i className="bi bi-filter"></i>
                                     Get Top Courses
                                 </button>
-                            }
-                            {
-                                (seeTopCourses === 1) &&
-                                <button className='float-end btn btn-light btn-sm' onClick={getAllCourses}>Get All Courses</button>
-                            }
-                        </h5>                         
-                    </div>
-                    <div className='card-body' data-mdb-perfect-scrollbar={true} style={{position:'relative'}}>
-                        <table  className="table"> 
-                            <thead>
-                                <tr>
-                                    <th scope='col'>Name</th>
-                                    <th scope='col'>Journey</th>
-                                    <th scope='col'>Start Date</th>
-                                    <th scope='col'>End Date</th>
-                                    <th scope='col'>Enrolled Students </th>
-                                    <th scope='col'>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    courses.map( (course, index) => {
-                                        return (
-                                            <CourseComponent 
-                                                key={index} 
-                                                course={course}
-                                                remove={confirmDeleteCourse}
-                                                update={enableUpdateCourse}
-                                            />
-                                        )
-                                    })
-                                }
-                            
-                            </tbody>
-                        </table>                                
+                                <button className='float-end btn btn-primary btn-sm me-3 ' onClick={handleShow}>New Course</button>
+                            </div>
+                        }
+                        {
+                            (seeTopCourses === 1) &&
+                            <button className='float-end btn btn-light btn-sm' onClick={getAllCourses}>Get All Courses</button>
+                        }
+                    </h5>                         
+                </div>
+                <div className='col-12'>
+                    <div className='row'>
+                        {
+                            courses.map( (course, index) => {
+                                return (
+                                    <CourseComponent 
+                                        key={index} 
+                                        course={course}
+                                        remove={confirmDeleteCourse}
+                                        update={enableUpdateCourse}
+                                    />
+                                )
+                            })
+                        }
                     </div>
                 </div>                
-            </div>           
-
+            </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                 <Modal.Title>Courses Registration</Modal.Title>
@@ -219,7 +205,6 @@ function CourseListComponent() {
                 </Button> */}
                 </Modal.Footer>
             </Modal>
-
         </div>
     )
 }

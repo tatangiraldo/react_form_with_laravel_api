@@ -25,28 +25,30 @@ import { Journeys } from '../enums/journeys.enums'
     }
 
     return (
-        <tr className='fw-normal text-capitalize'>
-            <th>
-                <span className='ms-2'> {course.name} </span> 
-            </th>
-            <td className='align-middle'>
-                {scheduleIcon()}
-            </td>
-            <td className='align-middle'>
-                <span > {course.start_date} </span>
-            </td>
-            <td className='align-middle'>
-                <span > {course.end_date} </span>
-            </td>
-            <td className='align-middle'>
-                <span > {course.related_students_number} </span>
-            </td>            
-            <td className='align-middle'>
-                <span > 
+        <div className='col-12 col-lg-3 col-md-4 mt-3 text-capitalize'>
+            <div className="card">
+                <div className="card-body">
+                    <h5 className="card-title"> {course.name} </h5>
+                    <p className="card-text">
+                        <span className='fw-bold'>
+                            Start date:
+                        </span>
+                        <br /> {course.start_date} <br />
+                        <span className='fw-bold'>
+                            End date: 
+                        </span>
+                        <br />{course.end_date}<br />
+                        {scheduleIcon()} 
+                        <br />
+                        <span className='fw-bold'>Students &nbsp; </span>
+                        {course.related_students_number} 
+                    </p>
                     <i title='Update Course' onClick={() => update(course)} className="bi bi-pencil-square course-action" style={{color: 'blue'}}></i> &nbsp; &nbsp;
-                    <i title='Delete Course' onClick={() => remove(course)} className="bi bi-trash course-action" style={{color: 'tomato'}}></i>                </span> 
-            </td>
-        </tr>
+                    <i title='Delete Course' onClick={() => remove(course)} className="bi bi-trash course-action" style={{color: 'tomato'}}></i>
+                </div>
+            </div>
+
+        </div>
     );
  };
   
