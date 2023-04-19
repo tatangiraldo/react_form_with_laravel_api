@@ -77,6 +77,9 @@ function StudentListComponent(props){
         }
     }
 
+    /**
+     * Confirm delete student
+     */
     const confirmDeleteStudent = (student) =>{
         
         confirmAlert({
@@ -113,6 +116,9 @@ function StudentListComponent(props){
         }
     }
 
+    /**
+     * Create an student
+     */
     const addStudent = async(student) => {
         setLoading(true);
         const request = await axios.post(`${endPoint}/student`, student)
@@ -127,6 +133,9 @@ function StudentListComponent(props){
         }
     }
 
+    /**
+     * Update an student
+     */
     const updateStudent = async(student) => {
         setLoading(true);
         const request = await axios.put(`${endPoint}/student/${student.id}`, student)
@@ -211,6 +220,7 @@ function StudentListComponent(props){
        }
    }
 
+   //Open Modal in update student way
     const enableUpdateStudent = (student) => {
         if(student.id){
             setTmpUpdateStudent(student)
@@ -219,6 +229,7 @@ function StudentListComponent(props){
         handleShow();
     }
 
+    //Open Modal in assign course student way
     const enableAssignCourse = (student) => {
     
         setTmpUpdateStudent(new StudentModel())

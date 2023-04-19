@@ -52,6 +52,9 @@ function CourseListComponent() {
         setLoading(false);
     }
 
+    /**
+     * Get all courses without filters
+     */
     const getAllCourses = () => {
         setLoading(true);
         setCourses([]);
@@ -59,6 +62,9 @@ function CourseListComponent() {
         getCourses()
     }
 
+    /**
+     * Get top courses
+     */
     const getTopCourses = () => {
         setLoading(true);
         setCourses([]);
@@ -66,6 +72,9 @@ function CourseListComponent() {
         getCourses()
     }
 
+    /**
+     * Confirm to delete course
+     */
     const confirmDeleteCourse = (course) =>{
         
         confirmAlert({
@@ -103,6 +112,9 @@ function CourseListComponent() {
         }
     }
 
+    /**
+     * Create a course
+     */
     const addCourse = async(course) => {
         setLoading(true)
         const request = await axios.post(`${endPoint}/course`, course)
@@ -117,6 +129,9 @@ function CourseListComponent() {
         }
     }
 
+    /**
+     * Update a course
+     */
     const updateCourse = async(course) => {
         setLoading(true);
         const request = await axios.put(`${endPoint}/course/${course.id}`, course)
@@ -138,8 +153,10 @@ function CourseListComponent() {
         }
     }
 
-    const enableUpdateCourse = (course) => {
-        
+    /**
+     * Open modal to update course
+     */
+    const enableUpdateCourse = (course) => {        
         handleShow();
         setTmpUpdateCourse(course)
     }

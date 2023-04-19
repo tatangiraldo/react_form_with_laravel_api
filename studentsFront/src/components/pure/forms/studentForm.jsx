@@ -9,7 +9,6 @@ const StudentForm = ({add, existStudent, update}) => {
 
         //update mode?
         if(existStudent?.id > 0){
-            debugger;
             setName(existStudent.name)
             setLastName(existStudent.name)
             setAge(existStudent.age)

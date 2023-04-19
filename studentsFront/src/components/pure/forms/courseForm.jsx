@@ -10,7 +10,6 @@ const CourseForm = ({add, existCourse, update}) => {
         //update mode?
         if(existCourse?.id > 0){
             setName(existCourse.name)
-            debugger;
             scheduleRef.current.value = existCourse.schedule
             setStart_date(existCourse.start_date)
             setEnd_date(existCourse.end_date)
@@ -24,7 +23,6 @@ const CourseForm = ({add, existCourse, update}) => {
     const scheduleRef = useRef(Journeys.Morning);
 
     function handleCourse(e){
-        debugger;
         e.preventDefault();
         const course = new CourseModel(
             0,
