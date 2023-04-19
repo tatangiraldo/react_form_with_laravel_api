@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-import { StudentModel } from '../../models/student.model';
 import '../../styles/course.scss'
 
 const StudentComponent = ({student, remove, update, assignCourse, unassignCourse}) => {
