@@ -116,7 +116,13 @@ function CourseListComponent() {
      * Create a course
      */
     const addCourse = async(course) => {
+        
+        if(course.end_date < course.start_date){
+            showMessage('Start date cannot be major than end date');
+            return
+        }
         setLoading(true)
+
         const request = await axios.post(`${endPoint}/course`, course)
         if(request?.data && request.data.code === 200){
             const tempCourses = [...courses]
