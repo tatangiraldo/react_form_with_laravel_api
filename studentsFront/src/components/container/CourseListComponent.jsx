@@ -153,7 +153,7 @@ function CourseListComponent() {
                     <h5>
                        <span className='float-start'> Course list: </span>
                         {
-                            (seeTopCourses === 0) &&
+                            (seeTopCourses === 0 ) &&
                             <div>
                                 <button className='float-end btn btn-light btn-sm' onClick={getTopCourses}>
                                     <i className="bi bi-filter"></i>
@@ -181,6 +181,10 @@ function CourseListComponent() {
                                     />
                                 )
                             })
+                        }
+                        { 
+                            (courses.length === 0) &&
+                            <p className='text text-danger'>There are not courses created</p>
                         }
                     </div>
                 </div>                

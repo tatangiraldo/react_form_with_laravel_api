@@ -221,20 +221,17 @@ function StudentListComponent(props){
     /************************************/
 
     return (
-        <div>
+        <div className='container bg-white p-3'>
             <div className='col-12'>
                 
-                <div className='card'>
-                    <div className='card-header p-3'>
-                        <h5>
-                            Student List: 
-                            <button className='btn btn-primary btn-sm float-start' onClick={enableUpdateStudent}>New Student</button>
-                        </h5>
-                        
-                    </div>
+                <div className=''>
+                    <h5>
+                        <span className='float-start'> Student List:  </span>
+                        <button className='btn btn-primary btn-sm float-end' onClick={enableUpdateStudent}>New Student</button>
+                    </h5>
                     { 
                     (students.length > 0) &&
-                        <div className='card-body' data-mdb-perfect-scrollbar={true} style={{position:'relative'}}>
+                        <div data-mdb-perfect-scrollbar={true} >
                             <table   className="table">
                                 <thead>
                                     <tr>
