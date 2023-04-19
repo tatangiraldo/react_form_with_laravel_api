@@ -6,7 +6,7 @@ const StudentComponent = ({student, remove, update, assignCourse, unassignCourse
 
     function iconRelatedCourses(){
         
-        if (student.courses.length > 0) {
+        if (student?.courses?.length > 0) {
             return (<span>{student.courses.length }<i className="bi bi-emoji-smile course-action" style={{color: 'green'}}></i></span>)
         }
         return (<span>0<i className="bi bi-emoji-frown course-action" style={{color: 'grey'}}></i></span>)
@@ -14,17 +14,17 @@ const StudentComponent = ({student, remove, update, assignCourse, unassignCourse
 
     return (
         <tbody>
-            <tr className='fw-normal infoRow'>
+            <tr className='fw-normal infoRow text-capitalize'>
                 <td>
-                    <span className='ms-2'>{ student.name } </span> 
+                    <span className='ms-2 fw-bold'>{ student.name } </span> 
                 </td>
                 <td>
-                    <span className='ms-2'> { student.last_name } </span> 
+                    <span className='ms-2 fw-bold'> { student.last_name } </span> 
                 </td>
                 <td className='align-middle'>
                     <span > { student.age } </span>
                 </td>
-                <td className='align-middle'>
+                <td className='align-middle text-lowercase'>
                     <span > { student.address } </span>
                 </td>
                 <td className='align-middle'>
@@ -34,6 +34,8 @@ const StudentComponent = ({student, remove, update, assignCourse, unassignCourse
                 </td>
                 <td className='align-middle'>
                     <i title='Assign Course' onClick={() => assignCourse(student)} className="bi bi-bag-plus-fill course-action" style={{color: 'blue'}}></i> &nbsp; &nbsp;
+                </td>
+                <td className='align-middle'>
                     <i title='Update Student' onClick={() => update(student)} className="bi bi-pencil-square course-action" style={{color: 'blue'}}></i> &nbsp; &nbsp;
                     <i title='Update Student' onClick={() => remove(student)} className="bi bi-trash course-action" style={{color: 'red'}}></i>
                 </td>
@@ -41,7 +43,7 @@ const StudentComponent = ({student, remove, update, assignCourse, unassignCourse
             { 
                 (student.courses?.length > 0) && 
                 <tr className='coursesList'>
-                    <td className='text-start' colSpan={5}>   
+                    <td className='text-start fst-italic' colSpan={7}>   
                         Assigned Courses:
                         {                            
                             student.courses.map( (course, index) => {

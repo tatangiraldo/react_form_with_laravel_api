@@ -36,4 +36,5 @@ Route::controller(CoursesController::class)->group(function (){
     Route::get('/course/{id}', 'show');
     Route::put('/course/{id}', 'update');
     Route::delete('/course/{id}', 'destroy');
+    Route::get('/courses/topCourses', 'topCourses');
 });

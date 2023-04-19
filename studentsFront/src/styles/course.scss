@@ -2,11 +2,16 @@
     cursor: pointer;
 }
 .buttonBadge{
-    height: 30px;
-    width: 30px;
-    padding: 3px !important;
+    height: 20px;
+    width: 20px;
+    padding: 0px !important;
+    font-size: 12px;
 }
 .table > :not(caption) > * > *{
     border: none;
 }
-.infoRow td{padding-top: 25px;}
+.infoRow td{padding-top: 35px;}
+.table tbody:hover{
+    background-color: #dedede;
+}
+.btn{cursor: pointer;}

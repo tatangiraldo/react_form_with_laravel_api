@@ -82,8 +82,9 @@ class StudentsController extends Controller
         );
 
         $newStudent = new Student();
-        $newStudent->name = $request->name;
-        $newStudent->last_name = $request->last_name;
+        //standarize name:
+        $newStudent->name = strtolower( $request->name);
+        $newStudent->last_name = strtolower($request->last_name);
         $newStudent->age = $request->age;
         $newStudent->address = $request->address;
         $newStudent->related_courses = $request->related_courses;
@@ -127,7 +128,9 @@ class StudentsController extends Controller
         }else{
 
             $currentStudent->name = $request->name;
-            $currentStudent->last_name = $request->last_name;
+            //standarize name:
+            $currentStudent->name = strtolower( $request->name);
+            $currentStudent->last_name = strtolower($request->last_name);
             $currentStudent->age = $request->age;
             $currentStudent->address = $request->address;
             $currentStudent->related_courses = $request->related_courses;
@@ -176,9 +179,6 @@ class StudentsController extends Controller
             return $response;
         }
 
-        //validate previous assigned course:
-        //$relationExist = Course::where('related_courses', 'LIKE', '%'.$courseId.'%')->get();
-
         //student exist?
         $student = Student::find($request->studentId);
         if(is_null($student)){
@@ -205,6 +205,10 @@ class StudentsController extends Controller
         $student->related_courses = implode(",", $arrayCourses);
         $student->save();
 
+        //Update course counter
+        $course->related_students_number = $course->related_students_number + 1;
+        $course->save();
+
         $response -> code = 200;
         $response->message = 'Course assigned';
         $response->data = $student;
@@ -226,9 +230,6 @@ class StudentsController extends Controller
             $response->message = 'Invalid data structure';
             return $response;
         }
-
-        //validate previous assigned course:
-        //$relationExist = Course::where('related_courses', 'LIKE', '%'.$courseId.'%')->get();
 
         //student exist?
         $student = Student::find($request->studentId);

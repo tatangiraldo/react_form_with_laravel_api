@@ -24,7 +24,6 @@ const StudentForm = ({add, existStudent, update}) => {
     const [address, setAddress] = useState('')
 
     function handleStudent(e){
-        debugger;
         e.preventDefault();
         const student = new StudentModel(
             0,
@@ -47,10 +46,9 @@ const StudentForm = ({add, existStudent, update}) => {
 
     return (
         <form onSubmit={handleStudent} className="align-items-center mb-4">
-            <br></br>
-            <h2>Create new student</h2>
+            
             <div className="mb-3">
-                <label htmlFor="name" className="form-label">Student Name</label>
+                <label htmlFor="name" className="form-label">Student Register</label>
                 <input 
                     value={name}
                     onChange={ (e) => setName(e.target.value) }

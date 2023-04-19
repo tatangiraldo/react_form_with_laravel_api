@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Student;
 use App\Enums\ScheduleType;
+use DB;
 
 class CoursesController extends Controller
 {
@@ -21,6 +23,37 @@ class CoursesController extends Controller
         );
 
         $courses = Course::all();
+        if(!is_null($courses)){
+            $response->code = 200;
+            $response->message = '';
+            $response->data = $courses;
+        }
+        return $response;
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function topCourses()
+    {
+        $response = (object) array(
+            'code'=>400,
+            'data'=>null,
+            'message'=>'Error getting Courses'
+        );
+
+        //DB::enableQueryLog();
+
+        $courses = Course::where('updated_at', '<=', date("Y-m-d", strtotime(date("Y-m-d")."+ 6 month")))
+                            ->where('related_students_number','>','0')
+                            ->orderByDesc('related_students_number')
+                            ->limit(3)
+                            ->get();
+
+        /*print_r($courses);
+        $query = DB::getQueryLog();
+        dd($query);*/
+
         if(!is_null($courses)){
             $response->code = 200;
             $response->message = '';
@@ -123,6 +156,7 @@ class CoursesController extends Controller
         return $response;
     }
 
+
     /**
      * Remove the specified resource from storage.
      */
@@ -134,14 +168,28 @@ class CoursesController extends Controller
             'message'=>''
         );
 
-        $currentCourse = Course::find($id);
-        if(is_null($currentCourse)){
+        //validate students related
+        //DB::enableQueryLog();
+        $relatedStudents = Student::where('related_courses', 'like', '%'.$id.'%')->first();
+        //$query = DB::getQueryLog();
+        //dd($query);
+        if(!is_null($relatedStudents)){
+
             $response->code = 400;
-            $response->message = 'Course Not Found';
+            $response->message = 'The Course has related students, make sure the course does not have students';
+
         }else{
-            $response->message = 'Course Removed';
-            $removeCourse = Course::destroy($id);
+
+            $currentCourse = Course::find($id);
+            if(is_null($currentCourse)){
+                $response->code = 400;
+                $response->message = 'Course Not Found';
+            }else{
+                $removeCourse = Course::destroy($id);
+                $response->message = 'Course Removed';
+            }
         }
+
 
         return $response;
     }

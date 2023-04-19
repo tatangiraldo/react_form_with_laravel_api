@@ -47,8 +47,6 @@ function StudentListComponent(props){
         if(courses?.length === 0 ){
             const  request = await axios.get(`${endPoint}/courses`)
             if(request?.data && request.data.code === 200){
-                debugger;
-
                 const dataForSelect = request.data.data.map(function(course){ 
                     return {
                         'value': course.id,
@@ -80,7 +78,7 @@ function StudentListComponent(props){
     }
 
     const confirmDeleteStudent = (student) =>{
-        debugger;
+        
         confirmAlert({
             title: 'Delete student ?',
             message: `¿Do you want to delete ${student.name} ${student.last_name} ?`,
@@ -100,7 +98,7 @@ function StudentListComponent(props){
      * Delete a student
      */
     const deleteStudent = async(student) => {        
-        debugger;
+        
         const request = await axios.delete(`${endPoint}/student/${student.id}`)
         if(request?.data && request.data.code === 200){
             
@@ -127,7 +125,7 @@ function StudentListComponent(props){
     }
 
     const updateStudent = async(student) => {
-        debugger;
+        
         const request = await axios.put(`${endPoint}/student/${student.id}`, student)
         if(request?.data && request.data.code === 200){                   
             const tempStudents = [...students].map((c) => { 
@@ -155,18 +153,15 @@ function StudentListComponent(props){
             }
         const request = await axios.post(`${endPoint}/student/unassignCourse/`, data)
         if(request?.data && request.data.code === 200){
-                
-            debugger;
+            //search student's courses
             const tempStudents = [...students].map((st) => { 
                 if(st.id === student.id){
-                    const indexCourse = students.indexOf(course.id)
-                    student.courses.splice(indexCourse, 1)                    
+                    const indexCourse = st.courses.indexOf(course)
+                    st.courses.splice(indexCourse, 1)
                 }
                 return st
             })
-
             setStudents(tempStudents)
-
         }else{
             showMessage(request.data.message);
         }
@@ -176,7 +171,6 @@ function StudentListComponent(props){
      * Assign a student course
      */
      const assignCourse = async(e) => {      
-         debugger;
         e.preventDefault();  
         let selectVal = courseRef.current.getValue();
         let data = {
@@ -186,19 +180,40 @@ function StudentListComponent(props){
 
        const request = await axios.post(`${endPoint}/student/assignCourse/`, data)
        if(request?.data && request.data.code === 200){
-               
+
+            //search student's courses
+            const tempStudents = [...students].map((st) => { 
+                if(st.id === assignStudentCourse.id){
+                    
+                    const newCourse = courses.find(function(cs){ 
+                        return cs.id === selectVal[0].value
+                    })
+                    if(!st.courses) {
+                        st.courses = [];
+                    }
+                    st.courses?.push(newCourse)
+                }
+                return st
+            })
+            handleClose();
+            setStudents(tempStudents) 
         
        }else{
            showMessage(request.data.message);
        }
    }
-    
+
     const enableUpdateStudent = (student) => {
+        if(student.id){
+            setTmpUpdateStudent(student)
+        }
+        setAssignStudentCourse(new StudentModel())
         handleShow();
-        setTmpUpdateStudent(student)
     }
 
     const enableAssignCourse = (student) => {
+    
+        setTmpUpdateStudent(new StudentModel())
         setAssignStudentCourse(student)
         handleShow();
     }
@@ -208,40 +223,52 @@ function StudentListComponent(props){
     return (
         <div>
             <div className='col-12'>
+                
                 <div className='card'>
                     <div className='card-header p-3'>
-                        <h5>Student List: </h5>
-                        <button className='btn btn-primary btn-sm' onClick={handleShow}>New</button>
+                        <h5>
+                            Student List: 
+                            <button className='btn btn-primary btn-sm float-start' onClick={enableUpdateStudent}>New Student</button>
+                        </h5>
+                        
                     </div>
-                    <div className='card-body' data-mdb-perfect-scrollbar={true} style={{position:'relative'}}>
-                        <table   className="table">
-                            <thead>
-                                <tr>
-                                    <th scope='col'>Name</th>
-                                    <th scope='col'>Last Name</th>
-                                    <th scope='col'>Age</th>
-                                    <th scope='col'>Address</th>
-                                    <th scope="col">Related Curses</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>                            
-                            {
-                                students.map( (student, index) => {
-                                    return(
-                                        <StudentComponent 
-                                            key={index}
-                                            student={student}
-                                            remove = {confirmDeleteStudent}
-                                            update={enableUpdateStudent}
-                                            assignCourse={enableAssignCourse}
-                                            unassignCourse={unassignStudentCourse}
-                                        />
-                                    )
-                                })
-                            }                           
-                        </table>
-                    </div>
-                </div>                
+                    { 
+                    (students.length > 0) &&
+                        <div className='card-body' data-mdb-perfect-scrollbar={true} style={{position:'relative'}}>
+                            <table   className="table">
+                                <thead>
+                                    <tr>
+                                        <th scope='col'>Name</th>
+                                        <th scope='col'>Last Name</th>
+                                        <th scope='col'>Age</th>
+                                        <th scope='col'>Address</th>
+                                        <th scope="col">Related Curses</th>
+                                        <th scope="col">Assign new Course</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>                            
+                                {
+                                    students.map( (student, index) => {
+                                        return(
+                                            <StudentComponent 
+                                                key={index}
+                                                student={student}
+                                                remove = {confirmDeleteStudent}
+                                                update={enableUpdateStudent}
+                                                assignCourse={enableAssignCourse}
+                                                unassignCourse={unassignStudentCourse}
+                                            />
+                                        )
+                                    })
+                                }                           
+                            </table>
+                        </div>
+                    }
+                    { 
+                    (students.length === 0) &&
+                        <p className='text text-danger'>There are not students created</p>
+                    }
+                </div>               
             </div>
 
             <Modal show={show} onHide={handleClose}>
@@ -256,7 +283,7 @@ function StudentListComponent(props){
                         <form onSubmit={assignCourse} className="align-items-center mb-4">
                             <br></br>
                             <div className="mb-3">
-                                <label htmlFor="name" className="form-label">Student Name</label>
+                                <label htmlFor="course" className="form-label">Select Course</label>
                                 <Select 
                                    ref={courseRef} 
                                    options={dataSelectCourses} />

@@ -2,7 +2,6 @@
  import PropTypes from 'prop-types';
  import { CourseModel } from '../../models/course.model'
 import { Journeys } from '../enums/journeys.enums'
-import { Link } from 'react-router-dom';
  
  const CourseComponent = ({course, remove, update}) => {
 
@@ -26,7 +25,7 @@ import { Link } from 'react-router-dom';
     }
 
     return (
-        <tr className='fw-normal'>
+        <tr className='fw-normal text-capitalize'>
             <th>
                 <span className='ms-2'> {course.name} </span> 
             </th>
@@ -44,7 +43,6 @@ import { Link } from 'react-router-dom';
             </td>            
             <td className='align-middle'>
                 <span > 
-                    {/* <Link title='Update' to={`/edit/${course.id}`} className='bi bi-pencil-square'></Link>    */}
                     <i title='Update Course' onClick={() => update(course)} className="bi bi-pencil-square course-action" style={{color: 'blue'}}></i> &nbsp; &nbsp;
                     <i title='Delete Course' onClick={() => remove(course)} className="bi bi-trash course-action" style={{color: 'tomato'}}></i>                </span> 
             </td>

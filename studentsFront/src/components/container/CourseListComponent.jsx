@@ -18,7 +18,8 @@ function CourseListComponent() {
     //status of component
     const [courses, setCourses] = useState([]);
     const [tmpUpdateCourse, setTmpUpdateCourse] = useState(new CourseModel());
-    
+    const [seeTopCourses, setTopCourses] = useState(0);
+
     const [show, setShow] = useState(false);
     const handleClose = () =>  setShow(false);
     const handleShow = () => setShow(true);
@@ -31,9 +32,9 @@ function CourseListComponent() {
     useEffect(() => {
         
         setLoading(false);
-        getAllCourses();
+        getCourses();
 
-    }, [courses]);
+    }, [seeTopCourses]);
 
     const showMessage = (message) => {
         alert(message);
@@ -42,19 +43,38 @@ function CourseListComponent() {
     /**
      * Get all courses
      */
-    const getAllCourses = async() => {
-        if(courses?.length === 0 ){
-            const request = await axios.get(`${endPoint}/courses`)
-            if(request?.data && request.data.code === 200){
-                setCourses(request.data.data);
-            }else{
-                showMessage(request.data.message);
-            }
+    const getCourses = async() => {       
+        
+        let url = `${endPoint}/courses`
+        if(seeTopCourses) {
+            url = `${endPoint}/courses/topCourses`
+        }
+
+        const request = await axios.get(url)
+
+        if(request?.data && request.data.code === 200){
+            setCourses(request.data.data);
+        }else{
+            showMessage(request.data.message);
         }
     }
 
+    const getAllCourses = () => {        
+       
+        setCourses([]);
+        setTopCourses(0);
+        getCourses()
+    }
+
+    const getTopCourses = () => {        
+       
+        setCourses([]);
+        setTopCourses(1);
+        getCourses()
+    }
+
     const confirmDeleteCourse = (course) =>{
-        debugger;
+        
         confirmAlert({
             title: 'Delete course ?',
             message: `¿Do you want to delete ${course.name} ?`,
@@ -74,7 +94,7 @@ function CourseListComponent() {
      * Delete a course
      */
      const deleteCourse = async(course) => {        
-        debugger;
+        
         const request = await axios.delete(`${endPoint}/course/${course.id}`)
         if(request?.data && request.data.code === 200){
             
@@ -101,7 +121,7 @@ function CourseListComponent() {
     }
 
     const updateCourse = async(course) => {
-        debugger;
+        
         const request = await axios.put(`${endPoint}/course/${course.id}`, course)
         if(request?.data && request.data.code === 200){                   
             //const tempCourses = [...courses]
@@ -121,7 +141,7 @@ function CourseListComponent() {
     }
 
     const enableUpdateCourse = (course) => {
-        debugger;
+        
         handleShow();
         setTmpUpdateCourse(course)
     }
@@ -131,8 +151,21 @@ function CourseListComponent() {
             <div className='col-12'>
                 <div className='card'>
                     <div className='card-header p-3'>
-                        <h5>Course list: </h5> 
-                        <button className='btn btn-primary btn-sm' onClick={handleShow}>New</button>
+                        <h5>
+                            <button className='float-start btn btn-primary btn-sm' onClick={handleShow}>New Course</button>
+                            Course list:
+                            {
+                                (seeTopCourses === 0) &&
+                                <button className='float-end btn btn-light btn-sm' onClick={getTopCourses}>
+                                    <i class="bi bi-filter"></i>
+                                    Get Top Courses
+                                </button>
+                            }
+                            {
+                                (seeTopCourses === 1) &&
+                                <button className='float-end btn btn-light btn-sm' onClick={getAllCourses}>Get All Courses</button>
+                            }
+                        </h5>                         
                     </div>
                     <div className='card-body' data-mdb-perfect-scrollbar={true} style={{position:'relative'}}>
                         <table  className="table"> 
@@ -161,7 +194,7 @@ function CourseListComponent() {
                                 }
                             
                             </tbody>
-                        </table>
+                        </table>                                
                     </div>
                 </div>                
             </div>           
